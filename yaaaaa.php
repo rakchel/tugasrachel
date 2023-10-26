@@ -4,40 +4,44 @@
 // ========== tangkap nilai tinggi_badan dan berat_badan yang ada pada form html
 // silakan taruh code kalian di bawah
 
-// **********************  1  ************************** 
-$berat_badan = isset($_POST['berat_badan']);
-$tinggi_badan = isset($_POST['tinggi_badan']);
+$berat_badan = isset($_POST['berat_badan']) ? $_POST['berat_badan'] : '';
+$tinggi_badan = isset($_POST['tinggi_badan']) ? $_POST['tinggi_badan'] : '';
+
+// Initialize an empty error message string.
+$pesan_error = ""; 
+
+// Initialize an empty result string for the BMI calculation.
+$perhitungan = "";
+
+// Initialize an empty status string to show the BMI status later.
+$status = "";
 
 // **********************  2  ************************** 
 // ========== buatkan sebuah perkondisian di mana 
 // tinggi_badan atau $berat_badan tidak boleh kosong nilainya, kalau kosong buatkanlah pesan error
 // silakan taruh code kalian di bawah
 
-// **********************  2  ************************** 
-if (isset($berat_badan)){
-    $berat_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
-} elseif (isset($tinggi_badan)){
-    $tinggi_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
-}
-
-// **********************  3  ************************** 
-// ========== buatkanlah perkondisian di mana Jika kesalahan Error-nya "empty", 
-// masukkan perhitungan BMI sesuai dengan rumus yang tertera pada jurnal
-// silakan taruh code kalian di bawah
-
-// **********************  3  ************************** 
-// if (empty($pesan_error)) {
-//     $tinggi_badan = $tinggi_meter;
-//     $perhitungan = $berat_badan / ($tinggi_meter)**2;
-// }
-
-if (isset($_POST['berat_badan'])) {
-    $berat_badan = $_POST['berat_badan'];
-    $tinggi_badan = $_POST['tinggi_badan'];
+// Check if either the height or weight is empty.
+if (empty($berat_badan) || empty($tinggi_badan)) {
+     // Set an error message if they are empty.
+    $pesan_error = 'Tinggi badan dan berat badan tidak boleh kosong';
+} else {
+    // Convert height from cm to meters.
     $tinggi_meter = $tinggi_badan / 100;
+
+    // Calculate BMI using the provided formula.
     $perhitungan = $berat_badan / ($tinggi_meter)**2;
 
-    echo "$perhitungan";
+    // Determine the BMI status based on the calculated value.
+    if ($perhitungan <= 18.4) {
+        $status = 'Underweight';
+    } elseif ($perhitungan <= 24.9) {
+        $status = 'Normal';
+    } elseif ($perhitungan <= 39.9) {
+        $status = 'Overweight';
+    } else {
+        $status = 'Obese';
+    }
 }
 
 ?>
@@ -78,18 +82,11 @@ if (isset($_POST['berat_badan'])) {
                     <!-- silakan taruh code kalian di bawah -->
                     
                     <!--  **********************  4  **************************     -->
+                    <!-- Display the calculated BMI status -->
+                    
                     <?php
-                    if ($perhitungan <= 18.4){
-                        echo 'Underweight';
-                    } elseif ($perhitungan >= 18.5 && $perhitungan <= 24.9) {
-                        echo 'Normal';
-                    } elseif ($perhitungan >= 25.0 && $perhitungan <= 39.9) {
-                        echo 'Overweight';
-                    } elseif ($perhitungan >= 40) {
-                        echo 'Obese';
-                    }
+                        echo $status;
                     ?>
-
 
                     <!--  **********************  5  **************************     -->
                     <!-- Hasil pesan error nya taruh di sini yaaa!! 😊  -->
@@ -97,12 +94,13 @@ if (isset($_POST['berat_badan'])) {
                     
 
                     <!--  **********************  5  **************************     -->
+                   <!-- Display error message if any -->
+                   
                     <?php
-                    if(!empty($pesan_error)){
-                        echo 'Empty';
-                    }
+                        if (!empty($pesan_error)) {
+                            echo $pesan_error;
+                        }
                     ?>
-
                 </div>
             </div>
         </div>
