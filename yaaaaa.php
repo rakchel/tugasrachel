@@ -5,8 +5,18 @@
 // silakan taruh code kalian di bawah
 
 // **********************  1  ************************** 
-$berat_badan = isset($_POST['berat_badan']);
-$tinggi_badan = isset($_POST['tinggi_badan']);
+// Check if the 'berat_badan' and 'tinggi_badan' values were submitted through the form.
+$berat_badan = isset($_POST['berat_badan']) ? $_POST['berat_badan'] : '';
+$tinggi_badan = isset($_POST['tinggi_badan']); ? $_POST['tinggi_badan]: '';
+
+// Initialize an empty error message string.
+$pesan_error = ""; 
+
+// Initialize an empty result string for the BMI calculation.
+$perhitungan = "";
+
+// Initialize an empty status string to show the BMI status later.
+$status = "";
 
 // **********************  2  ************************** 
 // ========== buatkan sebuah perkondisian di mana 
@@ -14,11 +24,18 @@ $tinggi_badan = isset($_POST['tinggi_badan']);
 // silakan taruh code kalian di bawah
 
 // **********************  2  ************************** 
-if (isset($berat_badan)){
-    $berat_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
-} elseif (isset($tinggi_badan)){
-    $tinggi_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
-}
+// if (isset($berat_badan)){
+//     $berat_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
+// } elseif (isset($tinggi_badan)){
+//     $tinggi_badan = 'Tinggi badan dan berat badan tidak boleh kosong';
+// }
+
+// Check if either the height or weight is empty.
+if (empty($berat_badan) || empty($tinggi_badan)) {
+     // Set an error message if they are empty.
+    $pesan_error = 'Tinggi badan dan berat badan tidak boleh kosong';
+} else {
+    // If both values are present, proceed to calculate BMI.
 
 // **********************  3  ************************** 
 // ========== buatkanlah perkondisian di mana Jika kesalahan Error-nya "empty", 
@@ -31,13 +48,32 @@ if (isset($berat_badan)){
 //     $perhitungan = $berat_badan / ($tinggi_meter)**2;
 // }
 
-if (isset($_POST['berat_badan'])) {
-    $berat_badan = $_POST['berat_badan'];
-    $tinggi_badan = $_POST['tinggi_badan'];
+// if (isset($_POST['berat_badan'])) {
+//     $berat_badan = $_POST['berat_badan'];
+//     $tinggi_badan = $_POST['tinggi_badan'];
+//     $tinggi_meter = $tinggi_badan / 100;
+//     $perhitungan = $berat_badan / ($tinggi_meter)**2;
+
+//     echo "$perhitungan";
+// }
+
+// ?>
+    // Convert height from cm to meters.
     $tinggi_meter = $tinggi_badan / 100;
+
+     // Calculate BMI using the provided formula.
     $perhitungan = $berat_badan / ($tinggi_meter)**2;
 
-    echo "$perhitungan";
+    // Determine the BMI status based on the calculated value.
+    if ($perhitungan <= 18.4) {
+        $status = 'Underweight';
+    } elseif ($perhitungan <= 24.9) {
+        $status = 'Normal';
+    } elseif ($perhitungan <= 39.9) {
+        $status = 'Overweight';
+    } else {
+        $status = 'Obese';
+    }
 }
 
 ?>
